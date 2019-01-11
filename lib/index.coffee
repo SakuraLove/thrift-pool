@@ -128,11 +128,14 @@ module.exports = (thrift, service, pool_options = {}, thrift_options = {}) ->
       client = thrift.createClient service, connection
       debug "Client created"
       debug {client}
-      client[fn] args..., (err, results...) ->
-        debug "In client callback"
-        remove_listeners connection, cb_error, cb_timeout, cb_close
-        pool.release connection
-        cb err, results...
+      try
+        client[fn] args..., (err, results...) ->
+          debug "In client callback"
+          remove_listeners connection, cb_error, cb_timeout, cb_close
+          pool.release connection
+          cb err, results...
+      catch err
+	      cb err
 
   # The following returns a new object with all of the keys of an
   # initialized client class.
