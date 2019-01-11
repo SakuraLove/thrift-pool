@@ -9,6 +9,9 @@
 ##### This can prevent the issue that the try/catch cannot catch the the error in a asynchronous function
 
 
+
+# Original Introduction
+
 A module that wraps thrift interfaces in connection pooling logic to make them more resilient.
 
 The [node thrift code](https://www.npmjs.com/package/thrift) exposes a `service` and `types` file.
@@ -17,8 +20,6 @@ There is no way to use the node thrift library to do connection pooling or to cr
 
 This library takes in a thrift `service` and wraps the methods with connection pooling logic (based on [node-pool](https://github.com/coopernurse/node-pool)).
 
-
-# Original Introduction
 
 ## Installation
 
