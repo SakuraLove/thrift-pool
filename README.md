@@ -1,4 +1,13 @@
-# Thrift Pool
+# @y2nk4/Thrift Pool
+
+## Edited Based On [node-thrift-pool](https://www.npmjs.com/package/node-thrift-pool)
+### Edited Source host at [GitHub](https://github.com/SakuraLove/thrift-pool)
+### Original Source hosted at [GitHub](https://github.com/Clever/thrift-pool)
+
+##### Edited For Fixing an issue
+##### Now it will not throw the Error if it occur Errors while encoding the params or calling the remote function. Instead, it will callback the error by using the cb function
+##### This can prevent the issue that the try/catch cannot catch the the error in a asynchronous function
+
 
 A module that wraps thrift interfaces in connection pooling logic to make them more resilient.
 
@@ -8,6 +17,8 @@ There is no way to use the node thrift library to do connection pooling or to cr
 
 This library takes in a thrift `service` and wraps the methods with connection pooling logic (based on [node-pool](https://github.com/coopernurse/node-pool)).
 
+
+# Original Introduction
 
 ## Installation
 
