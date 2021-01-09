@@ -122,6 +122,7 @@ module.exports = function(thrift, service, pool_options, thrift_options) {
             let cb, _j
             // if there is one or more parameters
             if (args.length >= 1) {
+                debug('typeof args[args.length - 1]', typeof args[args.length - 1])
                 // if the last parameter is not a function,
                 // then pull the last parameter as the callback function
                 // if not, assuming it's using Promise(await/async)
@@ -134,6 +135,7 @@ module.exports = function(thrift, service, pool_options, thrift_options) {
             }
 
             function acquireAndExec(cb) {
+                cb = _.once(cb)
                 return pool.acquire(function(err, connection) {
                     debug('Connection acquired')
                     debug({
@@ -145,7 +147,6 @@ module.exports = function(thrift, service, pool_options, thrift_options) {
                     if (err != null) {
                         return cb(err)
                     }
-                    cb = _.once(cb)
                     let cb_error = function(err) {
                         debug('in error callback, post-acquire listener')
                         return cb(err)
@@ -165,14 +166,12 @@ module.exports = function(thrift, service, pool_options, thrift_options) {
                         client
                     })
                     try {
-                        return client[fn].apply(client, __slice.call(args).concat([function() {
-                            let err = args[0]
-                            let results = 2 <= args.length ? __slice.call(args, 1) : []
+                        return client[fn](...args, (err, ...results) => {
                             debug('In client callback')
                             remove_listeners(connection, cb_error, cb_timeout, cb_close)
                             pool.release(connection)
-                            return cb.apply(null, [err].concat(__slice.call(results)))
-                        }]))
+                            return cb(err, ...results)
+                        })
                     } catch (err) {
                         return cb(err)
                     }
