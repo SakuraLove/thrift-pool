@@ -1,7 +1,7 @@
 assert = require "assert"
 mocha = require "mocha"
 _ = require "underscore"
-thriftPool = {_private} = require "../lib/index"
+thriftPool = {_private} = require "../deprecated/lib/index"
 async  = require 'async'
 sinon = require "sinon"
 {EventEmitter} = require "events"

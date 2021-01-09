@@ -1,16 +1,23 @@
+<span align="center">
+
 # @y2nk4/Thrift Pool
 
-## Edited Based On [node-thrift-pool](https://www.npmjs.com/package/node-thrift-pool)
-### Edited Source host at [GitHub](https://github.com/SakuraLove/thrift-pool)
-### Original Source hosted at [GitHub](https://github.com/Clever/thrift-pool)
+</span>
 
-##### Edited For Fixing an issue
-##### Now it will not throw the Error if it occur Errors while encoding the params or calling the remote function. Instead, it will callback the error by using the cb function
-##### This can prevent the issue that the try/catch cannot catch the the error in a asynchronous function
+This repo is modified based on another repo, check [License declaration](#license-declaration) for more.
 
+# Features
 
+* Promise Supported :zap:
+  
+* Connection Pool based on [node-pool](https://github.com/coopernurse/node-pool) :beer:
 
-# Original Introduction
+# Introduction
+
+***WARNING: This Version has not been verified in a production scene yet, 
+please do more testing before use it on a production scene***
+
+Issues and PR are welcome!
 
 A module that wraps thrift interfaces in connection pooling logic to make them more resilient.
 
@@ -20,28 +27,38 @@ There is no way to use the node thrift library to do connection pooling or to cr
 
 This library takes in a thrift `service` and wraps the methods with connection pooling logic (based on [node-pool](https://github.com/coopernurse/node-pool)).
 
-
 ## Installation
 
 ```
-npm install node-thrift-pool
+npm install @y2nk4/node-thrift-pool
 ```
 
 ## Usage
 ```javascript
 var thrift = require('thrift'),
-  Service = require('./gen-nodejs/Service'),
-  Types = require('./gen-nodejs/types'),
-  thriftPool = require('node-thrift-pool');
+    Service = require('./gen-nodejs/Service'),
+    Types = require('./gen-nodejs/types'),
+    thriftPool = require('node-thrift-pool');
 
 var thrift_client = thriftPool(thrift, Service, {host: "localhost", port: 9090});
 
 /*
  * thrift_client is now an initialized thrift client that uses connection pooling behind the scenes
- * thrift_client.method(function(err, returned_data){console.log(err, returned_data)});
  */
 
+// Regular callback
+thrift_client.method(function(err, returned_data){
+    console.log(err, returned_data)
+});
+
+// Using Promise
+let returned_data = await thrift_client.method()
 ```
+
+## Promisify
+
+The Thrift has already implemented the Promise, if you don't pass a callback function for the
+last parameter, the library will assume that you are expecting a Promise, then of course, returns a Promise.
 
 ## Supported pooling options
 Options to use when creating pool, defaults match those used by node-pool.
@@ -97,3 +114,20 @@ npm test
 - Report issues, questions, feature requests on [GitHub Issues](https://github.com/Clever/thrift-pool/issues)
 
 Pull requests are welcome! Please ensure your patches are well tested. Please create separate branches for separate features/patches.
+
+## License declaration
+
+### This version of code edited Based On [node-thrift-pool](https://www.npmjs.com/package/node-thrift-pool), Source hosted at [GitHub](https://github.com/Clever/thrift-pool)
+
+### Edited Source host at [GitHub](https://github.com/Y2Nk4/thrift-pool)
+
+Edited For Fixing an issue
+
+Now it will not throw the Error if it occurs Errors while encoding the params
+or calling the remote function. Instead, it will callback the error by using the cb function
+This can prevent the issue that the try/catch cannot catch the error in an asynchronous function
+
+And I don't have much experience with CoffeeScript, so I decided to deprecate the CoffeeScript,
+and using the pure JavaScript instead.
+
+But the original code is still available on the `/deprecated` folder.
