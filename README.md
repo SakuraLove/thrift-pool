@@ -38,7 +38,7 @@ npm install @y2nk4/node-thrift-pool
 var thrift = require('thrift'),
     Service = require('./gen-nodejs/Service'),
     Types = require('./gen-nodejs/types'),
-    thriftPool = require('node-thrift-pool');
+    thriftPool = require('@y2nk4/node-thrift-pool');
 
 var thrift_client = thriftPool(thrift, Service, {host: "localhost", port: 9090});
 
